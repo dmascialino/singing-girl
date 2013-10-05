@@ -140,6 +140,11 @@ cincuenta y seis millones ciento veintitres mil cuatrocientos cincuenta y \
 seis con 67/100'
         )
 
+    def test_modo_estricto(self):
+        self.assertEquals(self.trad.sing(1000), 'mil')
+        self.assertEquals(self.trad.sing(1000, strict=True), 'un mil')
+        self.assertEquals(self.trad.sing(1000, strict=False), 'mil')
+
 
 if __name__ == '__main__':
     unittest.main()
