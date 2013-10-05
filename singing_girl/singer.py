@@ -17,7 +17,7 @@ class Singer(object):
         exp = self.exponentes[0]
         self.limite = 10 ** (exp * 2) - 1
 
-    def sing(self, number):
+    def sing(self, number, strict=False):
         """Interfaz publica para convertir numero a texto"""
 
         if type(number) != Decimal:
@@ -27,7 +27,7 @@ class Singer(object):
             msg = "El maximo numero procesable es %s" % self.limite
             raise ValueError(msg)
         else:
-            texto = self.__to_text(int(number))
+            texto = self.__to_text(int(number), strict)
         texto += self.__calcular_decimales(number)
 
         return texto
@@ -51,7 +51,7 @@ class Singer(object):
         else:
             return ''
 
-    def __to_text(self, number, indice=0, sing=False):
+    def __to_text(self, number, strict, indice=0, sing=False):
         """Convierte un numero a texto, recursivamente"""
 
         number = int(number)
@@ -90,13 +90,15 @@ class Singer(object):
                         return "%s %s" % (izq, exponentes[exp])
 
         elif divisor == int(number):
-            if exp == 3:
+            if exp == 3 and strict is False:
                 return exponentes[exp]
+            elif exp == 3 and strict is True:
+                return 'un %s' % exponentes[exp]
             else:
                 return 'un %s' % exponentes[exp]
 
         else:
-            return func(number, indice, sing)
+            return func(number, strict, indice, sing)
 
     def __numero_tres_cifras(self, number, indice=None, sing=False):
         """Convierte a texto numeros de tres cifras"""
