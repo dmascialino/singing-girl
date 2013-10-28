@@ -1,5 +1,5 @@
-#! -*- coding: utf8 -*-
-from __future__ import division
+#! -*- coding: utf-8 -*-
+from __future__ import division, unicode_literals
 from .dicts import digitos, decenas, centenas, exponentes
 from decimal import Decimal, InvalidOperation
 
@@ -7,17 +7,17 @@ from decimal import Decimal, InvalidOperation
 class Singer(object):
 
     def __init__(self):
-        self.calcular_limite()
+        self._calcular_limite()
 
-    def calcular_limite(self):
+    def _calcular_limite(self):
         """
         Calcula el numero maximo que se puede imprimir
         """
         self.exponentes = sorted(list(exponentes.keys()), reverse=True)
         exp = self.exponentes[0]
-        self.limite = 10 ** (exp*2) - 1
+        self.limite = 10 ** (exp * 2) - 1
 
-    def sing(self, number):
+    def sing(self, number, strict=False):
         """Interfaz publica para convertir numero a texto"""
 
         if type(number) != Decimal:
@@ -27,7 +27,7 @@ class Singer(object):
             msg = "El maximo numero procesable es %s" % self.limite
             raise ValueError(msg)
         else:
-            texto = self.__to_text(int(number))
+            texto = self.__to_text(int(number), strict)
         texto += self.__calcular_decimales(number)
 
         return texto
@@ -40,17 +40,18 @@ class Singer(object):
             #Usamos strings para obtener la parte decimal
             dec_tp = number.as_tuple()
             if dec_tp.exponent < 0:
-                dec = Decimal('0.' + ''.join([str(n) for n in dec_tp.digits[dec_tp.exponent:]]))
+                digit_list = [str(n) for n in dec_tp.digits[dec_tp.exponent:]]
+                dec = Decimal('0.' + ''.join(digit_list))
             else:
                 dec = 0
 
-        if  dec != 0:
+        if dec != 0:
             centavos = int(dec * 100)
             return ' con %s/100' % centavos
         else:
             return ''
 
-    def __to_text(self, number, indice = 0, sing=False):
+    def __to_text(self, number, strict, indice=0, sing=False):
         """Convierte un numero a texto, recursivamente"""
 
         number = int(number)
@@ -69,7 +70,7 @@ class Singer(object):
             else:
                 der = False
 
-            if exp == 3 and division == 1: #1000
+            if exp == 3 and division == 1:  # 1000
                 return "%s %s" % (exponentes[exp], der)
             else:
                 izq = func(division, indice, True)
@@ -88,15 +89,16 @@ class Singer(object):
                     else:
                         return "%s %s" % (izq, exponentes[exp])
 
-
         elif divisor == int(number):
-            if exp == 3:
+            if exp == 3 and strict is False:
                 return exponentes[exp]
+            elif exp == 3 and strict is True:
+                return 'un %s' % exponentes[exp]
             else:
                 return 'un %s' % exponentes[exp]
 
         else:
-            return func(number, indice, sing)
+            return func(number, strict, indice, sing)
 
     def __numero_tres_cifras(self, number, indice=None, sing=False):
         """Convierte a texto numeros de tres cifras"""
@@ -107,13 +109,15 @@ class Singer(object):
             return digitos[number]
 
         elif number < 20:
-            return 'dieci%s' % self.__numero_tres_cifras(number%10, None, sing)
+            return 'dieci%s' % \
+                    self.__numero_tres_cifras(number % 10, None, sing)
 
         elif number == 20:
             return 'veinte'
 
         elif number < 30:
-            return 'veinti%s' % self.__numero_tres_cifras(number%10, None, sing)
+            return 'veinti%s' % \
+                    self.__numero_tres_cifras(number % 10, None, sing)
 
         elif number < 100:
             texto = decenas[number // 10]
@@ -131,4 +135,3 @@ class Singer(object):
             if resto:
                 texto += ' %s' % self.__numero_tres_cifras(resto, None, sing)
             return texto
-

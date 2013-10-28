@@ -1,8 +1,10 @@
-#! -*- coding: utf8 -*-
+#! -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 import unittest
 import singing_girl
 from decimal import Decimal
+
 
 class TestTraductorNumeros(unittest.TestCase):
     def setUp(self):
@@ -33,11 +35,11 @@ class TestTraductorNumeros(unittest.TestCase):
         self.assertEquals(self.trad.sing(19), 'diecinueve')
         self.assertEquals(self.trad.sing(20), 'veinte')
         self.assertEquals(self.trad.sing(21), 'veintiuno')
-        self.assertEquals(self.trad.sing(22), 'veintidos')
-        self.assertEquals(self.trad.sing(23), 'veintitres')
+        self.assertEquals(self.trad.sing(22), 'veintidós')
+        self.assertEquals(self.trad.sing(23), 'veintitrés')
         self.assertEquals(self.trad.sing(24), 'veinticuatro')
         self.assertEquals(self.trad.sing(25), 'veinticinco')
-        self.assertEquals(self.trad.sing(26), 'veintiseis')
+        self.assertEquals(self.trad.sing(26), 'veintiséis')
         self.assertEquals(self.trad.sing(27), 'veintisiete')
         self.assertEquals(self.trad.sing(28), 'veintiocho')
         self.assertEquals(self.trad.sing(29), 'veintinueve')
@@ -64,7 +66,8 @@ class TestTraductorNumeros(unittest.TestCase):
         self.assertEquals(self.trad.sing(300), 'trescientos')
         self.assertEquals(self.trad.sing(333), 'trescientos treinta y tres')
         self.assertEquals(self.trad.sing(400), 'cuatrocientos')
-        self.assertEquals(self.trad.sing(444), 'cuatrocientos cuarenta y cuatro')
+        self.assertEquals(self.trad.sing(444),
+                          'cuatrocientos cuarenta y cuatro')
         self.assertEquals(self.trad.sing(500), 'quinientos')
         self.assertEquals(self.trad.sing(555), 'quinientos cincuenta y cinco')
         self.assertEquals(self.trad.sing(600), 'seiscientos')
@@ -78,22 +81,35 @@ class TestTraductorNumeros(unittest.TestCase):
         self.assertEquals(self.trad.sing(999), 'novecientos noventa y nueve')
 
     def test_miles(self):
-        self.assertEquals(self.trad.sing(4326), 'cuatro mil trescientos veintiseis')
-        self.assertEquals(self.trad.sing(7532), 'siete mil quinientos treinta y dos')
+        self.assertEquals(self.trad.sing(4326),
+            'cuatro mil trescientos veintiseis')
+        self.assertEquals(self.trad.sing(7532),
+            'siete mil quinientos treinta y dos')
         self.assertEquals(self.trad.sing(1014), 'mil catorce')
         self.assertEquals(self.trad.sing(21000), 'veintiun mil')
         self.assertEquals(self.trad.sing(71000), 'setenta y un mil')
 
-        self.assertEquals(self.trad.sing(916543), 'novecientos dieciseis mil quinientos cuarenta y tres')
+        self.assertEquals(self.trad.sing(916543),
+            'novecientos dieciseis mil quinientos cuarenta y tres')
 
     def test_numeros_grandes(self):
-        self.assertEquals(self.trad.sing(1000000), 'un millon');
-        self.assertEquals(self.trad.sing(1000021), 'un millon veintiuno');
-        self.assertEquals(self.trad.sing(41000021), 'cuarenta y un millones veintiuno');
-        self.assertEquals(self.trad.sing(41000021), 'cuarenta y un millones veintiuno');
+        self.assertEquals(self.trad.sing(1000000), 'un millón')
+        self.assertEquals(self.trad.sing(1000021), 'un millón veintiuno')
+        self.assertEquals(self.trad.sing(41000021),
+                          'cuarenta y un millones veintiuno')
+        self.assertEquals(self.trad.sing(41000021),
+                          'cuarenta y un millones veintiuno')
 
-        self.assertEquals(self.trad.sing(416010015), 'cuatrocientos dieciseis millones diez mil quince');
-        self.assertEquals(self.trad.sing(1123123123123123123123123123123123456123456), 'un millon ciento veintitres mil ciento veintitres billones ciento veintitres mil ciento veintitres millones ciento veintitres mil ciento veintitres trillones ciento veintitres mil ciento veintitres millones ciento veintitres mil ciento veintitres billones ciento veintitres mil cuatrocientos cincuenta y seis millones ciento veintitres mil cuatrocientos cincuenta y seis');
+        self.assertEquals(self.trad.sing(416010015),
+                          'cuatrocientos dieciseis millones diez mil quince')
+        self.assertEquals(
+            self.trad.sing(1123123123123123123123123123123123456123456),
+            'un millon ciento veintitres mil ciento veintitres billones \
+ciento veintitres mil ciento veintitres millones ciento veintitres mil ciento \
+veintitres trillones ciento veintitres mil ciento veintitres millones ciento \
+veintitres mil ciento veintitres billones ciento veintitres mil cuatrocientos \
+cincuenta y seis millones ciento veintitres mil cuatrocientos cincuenta y seis'
+        )
 
     def test_decimales(self):
         self.assertEquals(self.trad.sing(16.1), 'dieciseis con 10/100')
@@ -101,12 +117,34 @@ class TestTraductorNumeros(unittest.TestCase):
         self.assertEquals(self.trad.sing(16.80), 'dieciseis con 80/100')
         self.assertEquals(self.trad.sing(16.51), 'dieciseis con 51/100')
         self.assertEquals(self.trad.sing(1.75), 'uno con 75/100')
-        self.assertEquals(self.trad.sing(Decimal('1123123123123123123123123123123123456123456.33')), 'un millon ciento veintitres mil ciento veintitres billones ciento veintitres mil ciento veintitres millones ciento veintitres mil ciento veintitres trillones ciento veintitres mil ciento veintitres millones ciento veintitres mil ciento veintitres billones ciento veintitres mil cuatrocientos cincuenta y seis millones ciento veintitres mil cuatrocientos cincuenta y seis con 33/100');
-        self.assertEquals(self.trad.sing(Decimal('1123123123123123123123123123123123456123456.67')), 'un millon ciento veintitres mil ciento veintitres billones ciento veintitres mil ciento veintitres millones ciento veintitres mil ciento veintitres trillones ciento veintitres mil ciento veintitres millones ciento veintitres mil ciento veintitres billones ciento veintitres mil cuatrocientos cincuenta y seis millones ciento veintitres mil cuatrocientos cincuenta y seis con 67/100');
+        self.assertEquals(
+            self.trad.sing(
+                Decimal('1123123123123123123123123123123123456123456.33')
+            ),
+            'un millon ciento veintitres mil ciento veintitres billones \
+ciento veintitres mil ciento veintitres millones ciento veintitres mil ciento \
+veintitres trillones ciento veintitres mil ciento veintitres millones ciento \
+veintitres mil ciento veintitres billones ciento veintitres mil cuatrocientos \
+cincuenta y seis millones ciento veintitres mil cuatrocientos cincuenta y \
+seis con 33/100'
+        )
+        self.assertEquals(
+            self.trad.sing(
+                Decimal('1123123123123123123123123123123123456123456.67')
+            ),
+            'un millon ciento veintitres mil ciento veintitres billones \
+ciento veintitres mil ciento veintitres millones ciento veintitres mil ciento \
+veintitres trillones ciento veintitres mil ciento veintitres millones ciento \
+veintitres mil ciento veintitres billones ciento veintitres mil cuatrocientos \
+cincuenta y seis millones ciento veintitres mil cuatrocientos cincuenta y \
+seis con 67/100'
+        )
 
+    def test_modo_estricto(self):
+        self.assertEquals(self.trad.sing(1000), 'mil')
+        self.assertEquals(self.trad.sing(1000, strict=True), 'un mil')
+        self.assertEquals(self.trad.sing(1000, strict=False), 'mil')
 
 
 if __name__ == '__main__':
-
     unittest.main()
-
