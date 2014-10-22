@@ -100,7 +100,7 @@ class Singer(object):
         else:
             return func(number, strict, indice, sing)
 
-    def __numero_tres_cifras(self, number, indice=None, sing=False):
+    def __numero_tres_cifras(self, number, strict, indice=None, sing=False):
         """Convierte a texto numeros de tres cifras"""
         number = int(number)
         if sing and number == 1:
