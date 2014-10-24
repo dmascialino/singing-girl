@@ -66,14 +66,14 @@ class Singer(object):
             division = number // divisor
             resto = number % divisor
             if resto:
-                der = func(resto, indice, sing)
+                der = func(resto, strict, indice, sing)
             else:
                 der = False
 
             if exp == 3 and division == 1:  # 1000
                 return "%s %s" % (exponentes[exp], der)
             else:
-                izq = func(division, indice, True)
+                izq = func(division, strict, indice, True)
                 if der:
                     if division == 1:
                         return "un %s %s" % (exponentes[exp], der)
@@ -110,20 +110,20 @@ class Singer(object):
 
         elif number < 20:
             return 'dieci%s' % \
-                    self.__numero_tres_cifras(number % 10, None, sing)
+                    self.__numero_tres_cifras(number % 10, strict, None, sing)
 
         elif number == 20:
             return 'veinte'
 
         elif number < 30:
             return 'veinti%s' % \
-                    self.__numero_tres_cifras(number % 10, None, sing)
+                    self.__numero_tres_cifras(number % 10, strict, None, sing)
 
         elif number < 100:
             texto = decenas[number // 10]
             resto = number % 10
             if resto:
-                texto += ' y %s' % self.__numero_tres_cifras(resto, None, sing)
+                texto += ' y %s' % self.__numero_tres_cifras(resto, strict, None, sing)
             return texto
 
         if number == 100:
@@ -133,5 +133,5 @@ class Singer(object):
             texto = centenas[number // 100]
             resto = number % 100
             if resto:
-                texto += ' %s' % self.__numero_tres_cifras(resto, None, sing)
+                texto += ' %s' % self.__numero_tres_cifras(resto, strict, None, sing)
             return texto
