@@ -1,0 +1,13 @@
+set -e
+
+if [ $# -ne 0 ]; then
+    nosetests "$@"
+else
+    nosetests tests
+    pylint kilink
+    pep8 --repeat kilink
+fi
+
+rm -rf _trial_temp
+rm -rf _logs_temp
+rm -rf tmp

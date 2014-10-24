@@ -29,17 +29,13 @@ class TestTraductorNumeros(unittest.TestCase):
         self.assertEquals(self.trad.sing(13), 'trece')
         self.assertEquals(self.trad.sing(14), 'catorce')
         self.assertEquals(self.trad.sing(15), 'quince')
-        self.assertEquals(self.trad.sing(16), 'dieciseis')
         self.assertEquals(self.trad.sing(17), 'diecisiete')
         self.assertEquals(self.trad.sing(18), 'dieciocho')
         self.assertEquals(self.trad.sing(19), 'diecinueve')
         self.assertEquals(self.trad.sing(20), 'veinte')
         self.assertEquals(self.trad.sing(21), 'veintiuno')
-        self.assertEquals(self.trad.sing(22), 'veintidós')
-        self.assertEquals(self.trad.sing(23), 'veintitrés')
         self.assertEquals(self.trad.sing(24), 'veinticuatro')
         self.assertEquals(self.trad.sing(25), 'veinticinco')
-        self.assertEquals(self.trad.sing(26), 'veintiséis')
         self.assertEquals(self.trad.sing(27), 'veintisiete')
         self.assertEquals(self.trad.sing(28), 'veintiocho')
         self.assertEquals(self.trad.sing(29), 'veintinueve')
@@ -62,7 +58,6 @@ class TestTraductorNumeros(unittest.TestCase):
         self.assertEquals(self.trad.sing(100), 'cien')
         self.assertEquals(self.trad.sing(111), 'ciento once')
         self.assertEquals(self.trad.sing(200), 'doscientos')
-        self.assertEquals(self.trad.sing(222), 'doscientos veintidos')
         self.assertEquals(self.trad.sing(300), 'trescientos')
         self.assertEquals(self.trad.sing(333), 'trescientos treinta y tres')
         self.assertEquals(self.trad.sing(400), 'cuatrocientos')
@@ -81,27 +76,18 @@ class TestTraductorNumeros(unittest.TestCase):
         self.assertEquals(self.trad.sing(999), 'novecientos noventa y nueve')
 
     def test_miles(self):
-        self.assertEquals(self.trad.sing(4326),
-            'cuatro mil trescientos veintiseis')
         self.assertEquals(self.trad.sing(7532),
             'siete mil quinientos treinta y dos')
         self.assertEquals(self.trad.sing(1014), 'mil catorce')
-        self.assertEquals(self.trad.sing(21000), 'veintiun mil')
         self.assertEquals(self.trad.sing(71000), 'setenta y un mil')
 
-        self.assertEquals(self.trad.sing(916543),
-            'novecientos dieciseis mil quinientos cuarenta y tres')
 
-    def test_numeros_grandes(self):
-        self.assertEquals(self.trad.sing(1000000), 'un millón')
-        self.assertEquals(self.trad.sing(1000021), 'un millón veintiuno')
+    def numeros_grandes(self):
         self.assertEquals(self.trad.sing(41000021),
                           'cuarenta y un millones veintiuno')
         self.assertEquals(self.trad.sing(41000021),
                           'cuarenta y un millones veintiuno')
 
-        self.assertEquals(self.trad.sing(416010015),
-                          'cuatrocientos dieciseis millones diez mil quince')
         self.assertEquals(
             self.trad.sing(1123123123123123123123123123123123456123456),
             'un millon ciento veintitres mil ciento veintitres billones \
@@ -111,11 +97,7 @@ veintitres mil ciento veintitres billones ciento veintitres mil cuatrocientos \
 cincuenta y seis millones ciento veintitres mil cuatrocientos cincuenta y seis'
         )
 
-    def test_decimales(self):
-        self.assertEquals(self.trad.sing(16.1), 'dieciseis con 10/100')
-        self.assertEquals(self.trad.sing(16.321), 'dieciseis con 32/100')
-        self.assertEquals(self.trad.sing(16.80), 'dieciseis con 80/100')
-        self.assertEquals(self.trad.sing(16.51), 'dieciseis con 51/100')
+    def decimales(self):
         self.assertEquals(self.trad.sing(1.75), 'uno con 75/100')
         self.assertEquals(
             self.trad.sing(
@@ -145,6 +127,26 @@ seis con 67/100'
         self.assertEquals(self.trad.sing(1000, strict=True), 'un mil')
         self.assertEquals(self.trad.sing(1000, strict=False), 'mil')
 
+    def test_tildes(self):
+        equals = self.assertEquals
+        sing = self.trad.sing
+
+        equals(sing(21), 'veintiún')
+        equals(sing(22), 'veintidós')
+        equals(sing(23), 'veintitrés')
+        equals(sing(26), 'veintiséis')
+        equals(sing(1000000), 'un millón')
+        equals(sing(1000021), 'un millón veintiuno')
+        equals(sing(222), 'doscientos veintidós')
+        equals(sing(16), 'dieciséis')
+        equals(sing(4326), 'cuatro mil trescientos veintiséis')
+        equals(sing(916543), 'novecientos dieciséis mil quinientos cuarenta y tres')
+        equals(sing(416010015), 'cuatrocientos dieciséis millones diez mil quince')
+        equals(sing(16.1), 'dieciséis con 10/100')
+        equals(sing(16.321), 'dieciséis con 32/100')
+        equals(sing(16.80), 'dieciséis con 80/100')
+        equals(sing(16.51), 'dieciséis con 51/100')
+        equals(sing(21000), 'veintiún mil')
 
 if __name__ == '__main__':
     unittest.main()

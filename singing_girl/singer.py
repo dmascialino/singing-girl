@@ -1,7 +1,8 @@
 #! -*- coding: utf-8 -*-
 from __future__ import division, unicode_literals
-from .dicts import digitos, decenas, centenas, exponentes
 from decimal import Decimal, InvalidOperation
+import enchant
+from .dicts import digitos, decenas, centenas, exponentes
 
 
 class Singer(object):
@@ -30,7 +31,26 @@ class Singer(object):
             texto = self.__to_text(int(number), strict)
         texto += self.__calcular_decimales(number)
 
-        return texto
+        return self.__agregar_tildes(texto)
+
+    def __agregar_tildes(self, texto):
+        con_tildes = ''
+        d = enchant.Dict("es")
+
+        for palabra in texto.split():
+            if palabra == 'y':
+                con_tildes += 'y '
+            elif '/' in palabra or palabra in('seis', 'trillones'):
+                con_tildes += palabra + ' '
+            elif palabra == 'trillon':
+                con_tildes += 'trillón' + ' '
+            else:
+                try:
+                    con_tildes += d.suggest(palabra)[0] + ' '
+                except:
+                    print palabra
+
+        return con_tildes.strip()
 
     def __calcular_decimales(self, number):
 
